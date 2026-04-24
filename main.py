@@ -45,12 +45,85 @@ def draw():
     screen.draw.filled_rect(timer_box, "beige")
     screen.draw.filled_rect(question_box, "beige")
     screen.draw.filled_rect(skip_box, "teal")
+
     for answer_box in answer_boxes:
         screen.draw.filled_rect(answer_box, "coral")
 
-def update():
-    pass
+    marquee_message="Welcome to Quiz Master.."+f"Q:{question_index} of {question_count}"
+    screen.draw.textbox(marquee_message,marquee_box,color="white")
+    screen.draw.textbox("Skip", skip_box, color="black", angle=-90)
+    screen.draw.textbox(str(time_left), timer_box, color="black")
+    screen.draw.textbox(question[0].strip(), question_box, color="black")
 
+    index=1
+    for answer_box in answer_boxes:
+        screen.draw.textbox(question[index].strip(), answer_box, color="black")
+        index=index+1
+
+def move_marquee():
+    marquee_box.x = marquee_box.x - 2
+    if marquee_box.right< 0:
+        marquee_box.left = WIDTH
+
+def read_question_file():
+    global question_count, questions
+    q_file=open(question_file_name,"r")
+    
+    for question in q_file:
+        questions.append(question)
+        question_count = question_count + 1
+    
+    q_file.close()
+
+def read_next_question():
+    global question_index 
+    question_index = question_index + 1
+    return questions.pop(0).split("|")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+def update():
+    move_marquee()
+
+#question=["Question....","ans1","ans2","ans3","ans4","1"]
+read_question_file()
+question = read_next_question()
 pgzrun.go()
 
 
